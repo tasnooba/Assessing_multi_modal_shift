@@ -10,20 +10,20 @@ Original file is located at
 import pandas as pd
 import numpy as np
 
-# 1. Access/Load the dataset
+# Access/Load the dataset
 df = pd.read_csv('/content/A_Passenger_Survey.csv')
 
-# 2. Show all original column names on the terminal
+# Show all original column names on the terminal
 # print("--- Original Columns ---")
 # for col in df.columns:
 #     print(col)
 
-# # 3. Drop the 3 unnecessary columns
-# # We use inplace=True so it modifies the dataframe directly without needing to reassign it
+# Drop the 3 unnecessary columns
+# We use inplace=True so it modifies the dataframe directly without needing to reassign it
 columns_to_drop = ['Timestamp', 'Gender.1', 'Column 25']
 df.drop(columns=columns_to_drop, inplace=True)
 
-# # 4. Show the column names again to verify they are gone
+# Show the column names again to verify they are gone
 print("\n--- Columns After Dropping ---")
 for col in df.columns:
     print(col)
@@ -60,8 +60,6 @@ rename_mapping = {
     'Ticketing system': 'rating_ticketing_system'
 }
 df.rename(columns=rename_mapping, inplace=True)
-
-df.head()
 
 for col in df.columns:
     print(col)
@@ -149,11 +147,11 @@ def clean_area(area):
 # Apply the function to your column
 df['residential_area'] = df['residential_area'].apply(clean_area)
 
-# Check the new frequency count!
+# Check the new frequency count
 print(df['residential_area'].value_counts(dropna=False))
 
 # ordinal scale transformation
-# 1. Define the ordinal spectrum (Lowest adoption to Highest)
+# Define the ordinal spectrum (Lowest adoption to Highest)
 adoption_mapping = {
     'No, I still primarily use my previous mode': '1 - Non-Switcher',
     'I use metro only occasionally': '2 - Marginal User',
@@ -161,10 +159,8 @@ adoption_mapping = {
     'Yes, I have completely switched to metro': '4 - Full-Switcher'
 }
 
-# 2. Apply the mapping to overwrite the old bulky text
+# Applying the mapping to overwrite the old bulky text
 df['is_metro_primary_now'] = df['is_metro_primary_now'].map(adoption_mapping)
-
-# 3. Print the results sorted by the index to see the perfect ordinal progression!
 print(df['is_metro_primary_now'].value_counts(dropna=False).sort_index())
 
 #clustering semantics
@@ -179,8 +175,6 @@ replace = {
 'Business':'work'
 }
 df['trip_purpose'] = df['trip_purpose'].map(replace)
-
-# Check the new, clean breakdown
 print(df['trip_purpose'].value_counts(dropna=False))
 
 # fixing vehicle distribution and creating four new columns
@@ -204,8 +198,6 @@ replace = {
 'Comfort or crowding concerns':'Comfort or crowding concerns'
 }
 df['reason_not_switched'] = df['reason_not_switched'].map(replace)
-
-# Check the new, clean breakdown
 print(df['reason_not_switched'].value_counts(dropna=False))
 
 # Define who is who based on our ordinal column
